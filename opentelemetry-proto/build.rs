@@ -11,6 +11,8 @@ fn main() -> Result<(), Error> {
     tonic_build::configure()
         .build_server(cfg!(feature = "build-server"))
         .build_client(cfg!(feature = "build-client"))
+        .type_attribute(".", "#[cfg_attr(feature = \"with-serde\", derive(::serde::Serialize, ::serde::Deserialize))]")
+        .type_attribute(".", "#[cfg_attr(feature = \"with-serde\", serde(rename_all = \"camelCase\"))]")
         .compile(
             &[
                 "src/proto/opentelemetry-proto/opentelemetry/proto/common/v1/common.proto",
